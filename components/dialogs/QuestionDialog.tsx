@@ -3,17 +3,27 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Square, SquareCheckBig, Trash2 } from "lucide-react";
+import { Pencil, Plus, Square, SquareCheckBig, Trash2 } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 export function QuestionDialog({ question }: { question?: any }) {
   const isEditingMode = Boolean(question);
-  const { control, register, watch, reset } = useForm({ defaultValues: question || {} });
+  const { control, register, reset } = useForm({ defaultValues: question || {} });
   const { fields, append, remove, update } = useFieldArray({ control, name: "answers" });
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>{isEditingMode ? "Edit Question" : "Add Question"}</Button>
+        {isEditingMode ? (
+          <Button className="flex items-center gap-2" variant={"ghost"}>
+            <Pencil />
+            <p>Edit</p>
+          </Button>
+        ) : (
+          <Button className="flex items-center gap-2">
+            <Plus />
+            <p>Add</p>
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogTitle className="pb-2">{isEditingMode ? `Edit Question ${question.text}` : "Add Question"}</DialogTitle>
