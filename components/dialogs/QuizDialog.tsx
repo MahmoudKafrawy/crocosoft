@@ -34,7 +34,6 @@ export function AddQuizDialog() {
           </DialogClose>
           <Button
             onClick={handleSubmit((data) => {
-              console.log(data);
               addQuiz(data);
               reset();
               setIsDialogOpen(false);

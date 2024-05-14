@@ -23,7 +23,6 @@ export default function Page({ params: { quizId } }: { params: { quizId: string 
   if (!hasHydrated) {
     return <main className="container py-16">Loading...</main>;
   }
-
   if (!quiz) {
     return (
       <main className="container py-16">
@@ -34,6 +33,7 @@ export default function Page({ params: { quizId } }: { params: { quizId: string 
       </main>
     );
   }
+
   return (
     <div className="container py-16">
       <Breadcrumb>
@@ -49,9 +49,9 @@ export default function Page({ params: { quizId } }: { params: { quizId: string 
       </Breadcrumb>
       <div className="flex justify-between w-full py-3">
         <h1 className="text-3xl font-medium">{quiz.title}</h1>
-        <QuestionDialog quizId={2} />
+        <QuestionDialog quizId={Number(quizId)} />
       </div>
-      {quiz.questions_answers?.map(({ answers, text }, index) => (
+      {quiz.questions_answers?.map(({ text, answers }, index) => (
         <Card key={index}>
           <CardHeader className="flex-row justify-between items-center">
             <CardTitle>
@@ -59,12 +59,12 @@ export default function Page({ params: { quizId } }: { params: { quizId: string 
               {index} . {text}
             </CardTitle>
             <Button variant={"ghost"} asChild>
-              <QuestionDialog question={{ index, text, answers }} quizId={2} />
+              <QuestionDialog question={{ index, text, answers }} quizId={Number(quizId)} />
             </Button>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-2">
-            {answers.map(({ text, id }) => (
-              <div key={id} className="bg-blue-100 border border-blue-700 px-2 py-1 rounded-md">
+            {answers.map(({ text }, index) => (
+              <div key={index} className="bg-blue-100 border border-blue-700 px-2 py-1 rounded-md">
                 {text}
               </div>
             ))}

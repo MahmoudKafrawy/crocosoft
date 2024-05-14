@@ -18,6 +18,7 @@ export function QuestionDialog({ question, quizId }: { question?: any; quizId?: 
   const addQuestion = useQuizzesStore((state: TQuizzesStore) => state.addQuestion);
   const updateQuestion = useQuizzesStore((state: TQuizzesStore) => state.updateQuestion);
 
+  console.log(quizId);
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>

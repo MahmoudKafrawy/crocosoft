@@ -17,7 +17,10 @@ export const useQuizzesStore = create<any>(
       quizzes: quizzes,
       addQuiz: (quiz: IQuiz) =>
         set((state: TQuizzesStore) => ({
-          quizzes: [...state.quizzes, { ...quiz, id: state.quizzes.length + 1 }],
+          quizzes: [
+            ...state.quizzes,
+            { ...quiz, id: state.quizzes.length + 1, created: new Date().toISOString(), score: null },
+          ],
         })),
       getQuiz: (id: number) => get().quizzes.filter((q: IQuiz) => q.id === id)[0],
       getAllQuizzes: () => get().quizzes,
@@ -26,7 +29,11 @@ export const useQuizzesStore = create<any>(
           return {
             quizzes: state.quizzes.map((q: IQuiz) => {
               if (q.id === quizId) {
-                return { ...q, questions_answers: [...(q.questions_answers || []), question] };
+                return {
+                  ...q,
+                  questions_answers: [...(q.questions_answers || []), question],
+                  modified: new Date().toISOString(),
+                };
               }
               return q;
             }),
