@@ -49,10 +49,21 @@ function QuestionDialogContent({
   const { control, register, reset, handleSubmit, watch } = useForm<any>({ values: question || {} });
 
   const { fields, append, remove, update } = useFieldArray({ control, name: "answers" });
-  console.log(fields);
 
   const addQuestion = useQuizzesStore((state: TQuizzesStore) => state.addQuestion);
   const updateQuestion = useQuizzesStore((state: TQuizzesStore) => state.updateQuestion);
+
+  const updateCorrectAnswer = (field: any) => {
+    fields.map((f: any, i: number) => {
+      if (f.id === field.id) {
+        console.log("this");
+        update(i, { ...f, is_true: !f.is_true });
+
+        return;
+      }
+      update(i, { ...f, is_true: false });
+    });
+  };
   return (
     <>
       <DialogTitle className="pb-2">{isEditingMode ? `Edit Question ${question.text}` : "Add Question"}</DialogTitle>
@@ -73,7 +84,12 @@ function QuestionDialogContent({
           {fields.map((field: any, index) => (
             <div key={field.id} className="flex gap-2">
               <Input placeholder="Question" {...register(`answers[${index}].text`)} />
-              <Button variant={"ghost"} onClick={() => update(index, { ...field, is_true: !field.is_true })}>
+              <Button
+                variant={"ghost"}
+                onClick={() => {
+                  updateCorrectAnswer(field);
+                }}
+              >
                 {field.is_true ? <SquareCheckBig color="#00cc4e" /> : <Square color="#000000" />}
               </Button>
               <Button onClick={() => remove(index)} variant={"ghost"}>
