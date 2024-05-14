@@ -3,16 +3,14 @@ import { AddQuizDialog } from "@/components/dialogs/QuizDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import useStore from "@/hooks/useStore";
-import { IQuiz, IQuizStore } from "@/interfaces/quiz";
+import { IQuiz } from "@/interfaces/quiz";
 import { useBoundStore } from "@/store/useBoundStore";
-import { useQuizzesStore } from "@/store/useQuizzesStore";
+import { TQuizzesStore, useQuizzesStore } from "@/store/useQuizzesStore";
 import Link from "next/link";
 
 export default function Home() {
-  const data = useStore<IQuizStore, IQuiz[]>(useQuizzesStore, (state) => state.quizzes);
-
   const hasHydrated = useBoundStore((state) => state._hasHydrated);
+  const quizzes: IQuiz[] = useQuizzesStore((state: TQuizzesStore) => state.quizzes);
 
   return (
     <main className="space-y-4 container py-16">
@@ -31,7 +29,7 @@ export default function Home() {
                 </div>
               </Card>
             ))
-          : data?.map(({ title, description, id }) => (
+          : quizzes?.map(({ title, description, id }) => (
               <Card key={id}>
                 <CardHeader>
                   <CardTitle>{title}</CardTitle>

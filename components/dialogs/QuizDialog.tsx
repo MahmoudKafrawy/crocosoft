@@ -3,13 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { QuizzesStore, useQuizzesStore } from "@/store/useQuizzesStore";
+import { useQuizzesStore, type TQuizzesStore } from "@/store/useQuizzesStore";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export function AddQuizDialog() {
-  const addQuiz = useQuizzesStore((state: QuizzesStore) => state.addQuiz);
+  const addQuiz = useQuizzesStore((state: TQuizzesStore) => state.addQuiz);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { register, handleSubmit, reset } = useForm({ shouldFocusError: true });
   return (
@@ -29,7 +29,7 @@ export function AddQuizDialog() {
         <Label htmlFor="youtubeLink">Youtube Link</Label>
         <Input placeholder="Youtube Link" id="youtubeLink" {...register("youtubeLink", { required: true })} />
         <DialogFooter>
-          <DialogClose>
+          <DialogClose asChild>
             <Button variant={"outline"}>Cancel</Button>
           </DialogClose>
           <Button

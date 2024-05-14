@@ -3,15 +3,23 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { TQuizzesStore, useQuizzesStore } from "@/store/useQuizzesStore";
 import { Pencil, Plus, Square, SquareCheckBig, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
-export function QuestionDialog({ question }: { question?: any }) {
+export function QuestionDialog({ question, quizId }: { question?: any; quizId?: number }) {
   const isEditingMode = Boolean(question);
-  const { control, register, reset } = useForm({ defaultValues: question || {} });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const { control, register, reset, handleSubmit } = useForm({ defaultValues: question || {} });
   const { fields, append, remove, update } = useFieldArray({ control, name: "answers" });
+
+  const addQuestion = useQuizzesStore((state: TQuizzesStore) => state.addQuestion);
+  const updateQuestion = useQuizzesStore((state: TQuizzesStore) => state.updateQuestion);
+
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         {isEditingMode ? (
           <Button className="flex items-center gap-2" variant={"ghost"}>
@@ -52,11 +60,22 @@ export function QuestionDialog({ question }: { question?: any }) {
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant={"outline"} onClick={() => reset()}>
-              Cancel
-            </Button>
+            <Button variant={"outline"}>Cancel</Button>
           </DialogClose>
-          <Button>{isEditingMode ? "Edit" : "Add"}</Button>
+          <Button
+            onClick={handleSubmit((data) => {
+              if (isEditingMode) {
+                updateQuestion(data, quizId, question.id);
+              }
+              if (!isEditingMode) {
+                addQuestion(data, quizId);
+              }
+              reset();
+              setIsDialogOpen(false);
+            })}
+          >
+            {isEditingMode ? "Edit" : "Add"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
