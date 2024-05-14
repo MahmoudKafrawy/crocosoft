@@ -58,19 +58,19 @@ export default function Page({ params: { quizId } }: { params: { quizId: string 
             </a>
           </p>
         </div>
-        <QuestionDialog quizId={Number(quizId)} />
+        <QuestionDialog quizId={Number(quizId)} key={quizId} />
       </div>
       <div className="grid grid-col-1 md:grid-cols-2 gap-4">
-        {quiz.questions_answers?.map(({ text, answers }, index) => (
+        {quiz.questions_answers?.map((question, index) => (
           <Card key={index}>
             <CardHeader className="flex-row justify-between items-center">
-              <CardTitle>{text}</CardTitle>
+              <CardTitle>{question.text}</CardTitle>
               <Button variant={"ghost"} asChild>
-                <QuestionDialog question={{ index, text, answers }} quizId={Number(quizId)} />
+                <QuestionDialog question={question} quizId={Number(quizId)} key={quizId} />
               </Button>
             </CardHeader>
             <CardContent className="flex flex-col gap-2">
-              {answers.map(({ text, is_true }, index) => (
+              {question.answers.map(({ text, is_true }, index) => (
                 <div
                   key={index}
                   className={`border ${

@@ -19,7 +19,14 @@ export const useQuizzesStore = create<any>(
         set((state: TQuizzesStore) => ({
           quizzes: [
             ...state.quizzes,
-            { ...quiz, id: state.quizzes.length + 1, created: new Date().toISOString(), score: null },
+            {
+              ...quiz,
+              id: state.quizzes.length + 1,
+              created: new Date().toISOString(),
+              modified: new Date().toISOString(),
+              score: null,
+              questions_answers: [],
+            },
           ],
         })),
       getQuiz: (id: number) => get().quizzes.filter((q: IQuiz) => q.id === id)[0],
