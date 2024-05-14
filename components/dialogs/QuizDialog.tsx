@@ -6,7 +6,7 @@ import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTr
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
-export function QuizDialog() {
+export function AddQuizDialog() {
   const { register } = useForm({});
 
   return (
