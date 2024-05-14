@@ -48,10 +48,19 @@ export default function Page({ params: { quizId } }: { params: { quizId: string 
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex justify-between w-full py-3">
-        <h1 className="text-3xl font-medium">{quiz.title}</h1>
+        <div>
+          <h1 className="text-3xl font-medium">{quiz.title}</h1>
+          <h2 className="text-gray-500 my-3">{quiz.description}</h2>
+          <p className="font-medium">
+            URL : &nbsp;
+            <a href={quiz.url} target="_blank" rel="noreferrer">
+              {quiz.url}
+            </a>
+          </p>
+        </div>
         <QuestionDialog quizId={Number(quizId)} />
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-col-1 md:grid-cols-2 gap-4">
         {quiz.questions_answers?.map(({ text, answers }, index) => (
           <Card key={index}>
             <CardHeader className="flex-row justify-between items-center">

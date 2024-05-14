@@ -11,7 +11,13 @@ import { useForm } from "react-hook-form";
 export function AddQuizDialog() {
   const addQuiz = useQuizzesStore((state: TQuizzesStore) => state.addQuiz);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { register, handleSubmit, reset } = useForm({ shouldFocusError: true });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({ shouldFocusError: true });
+  console.log();
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
@@ -27,7 +33,20 @@ export function AddQuizDialog() {
         <Label htmlFor="description">Description</Label>
         <Input placeholder="Description" id="description" {...register("description", { required: true })} />
         <Label htmlFor="youtubeLink">Youtube Link</Label>
-        <Input placeholder="Youtube Link" id="youtubeLink" {...register("youtubeLink", { required: true })} />
+        <Input
+          placeholder="Youtube Link"
+          id="youtubeLink"
+          {...register("url", {
+            required: true,
+            pattern: {
+              value: /https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/,
+              message: "Invalid youtube link",
+            },
+          })}
+        />
+        {/* TODO : add types for fields */}
+        {/* @ts-ignore */}
+        {errors.youtubeLink && <p className="text-red-500 text-sm">{errors.youtubeLink?.message}</p>}
         <DialogFooter>
           <DialogClose asChild>
             <Button variant={"outline"}>Cancel</Button>

@@ -18,7 +18,7 @@ export default function Home() {
         <h1 className="text-3xl font-medium">Quizzes</h1>
         {hasHydrated ? <AddQuizDialog /> : <Skeleton className="w-[125px] h-[40px] rounded-full" />}
       </header>
-      <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {!hasHydrated
           ? (Array.from({ length: 3 }) as any).map((_: any, index: number) => (
               <Card key={index}>
