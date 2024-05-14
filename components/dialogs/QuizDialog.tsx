@@ -1,16 +1,19 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { QuizzesStore, useQuizzesStore } from "@/store/useQuizzesStore";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "../ui/button";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from "../ui/dialog";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 
 export function AddQuizDialog() {
-  const { register } = useForm({});
-
+  const addQuiz = useQuizzesStore((state: QuizzesStore) => state.addQuiz);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { register, handleSubmit, reset } = useForm({ shouldFocusError: true });
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button className="flex items-center gap-2">
           <Plus />
@@ -20,16 +23,25 @@ export function AddQuizDialog() {
       <DialogContent>
         <DialogTitle>New Quiz</DialogTitle>
         <Label htmlFor="title">Title</Label>
-        <Input placeholder="Quiz Title" id="title" {...register("title")} />
+        <Input placeholder="Quiz Title" id="title" {...register("title", { required: true })} />
         <Label htmlFor="description">Description</Label>
-        <Input placeholder="Description" id="description" {...register("description")} />
+        <Input placeholder="Description" id="description" {...register("description", { required: true })} />
         <Label htmlFor="youtubeLink">Youtube Link</Label>
-        <Input placeholder="Youtube Link" id="youtubeLink" {...register("description")} />
+        <Input placeholder="Youtube Link" id="youtubeLink" {...register("youtubeLink", { required: true })} />
         <DialogFooter>
           <DialogClose>
             <Button variant={"outline"}>Cancel</Button>
           </DialogClose>
-          <Button>Add</Button>
+          <Button
+            onClick={handleSubmit((data) => {
+              console.log(data);
+              addQuiz(data);
+              reset();
+              setIsDialogOpen(false);
+            })}
+          >
+            Add
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
